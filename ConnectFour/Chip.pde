@@ -1,7 +1,14 @@
 public class Chip {
-  private int row, col;
+  //private int x, y;
+  private boolean isRed;
   
-  public void draw() {
-    
+  public Chip(boolean isRed) {
+    this.isRed = isRed;
+  }
+  
+  public void draw(PVector pos) {
+    color c = isRed ? #FF0000 : #FFFF00;
+    fill(c);
+    circle(pos.x, pos.y, SCALE);
   }
 }
