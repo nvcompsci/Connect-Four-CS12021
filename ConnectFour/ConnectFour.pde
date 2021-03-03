@@ -22,6 +22,7 @@ private void outlineSelection() {
   strokeWeight(5);
   stroke(#00FF00);
   int col = (int) map(mouseX, SCALE, board.boardWidth + SCALE, 0, board.spaces[0].length);
-  rect(col * SCALE + SCALE, SCALE, SCALE, board.boardHeight);
+  if (col >= 0 && col < board.spaces[0].length)
+    rect(col * SCALE + SCALE, SCALE, SCALE, board.boardHeight);
   noStroke();
 }
