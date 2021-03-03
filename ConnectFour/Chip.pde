@@ -11,4 +11,8 @@ public class Chip {
     fill(c);
     circle(pos.x, pos.y, SCALE);
   }
+  
+  public boolean isRed() {
+    return isRed;
+  }
 }
