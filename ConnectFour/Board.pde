@@ -40,4 +40,87 @@ public class Board {
     int y = (int) map(r, 0, spaces.length, SCALE, boardHeight + SCALE) + SCALE / 2;
     return new PVector(x, y);
   }
+  
+  /**
+  * 1. Determines if the column is available (not full)
+  * @param col - index of the column to check
+  * @return isAvailable - whether the column is available or not
+  */
+  private boolean isColumnAvailable(int col) {
+    
+    return false;
+  }
+  
+  /**
+  * 2. Tries all columns, picks the first one (leftmost) available
+  * @return col - index of the column picked
+  */
+  private int pickFirstAvailableColumn() {
+    
+    return 0;
+  }
+  
+  /**
+  * 3. Determines row placement after chip falls, which is calculated
+  * as the row with the highest index (lower on the page)
+  * @param col - index of the column to check
+  * @return row - index of the row where the chip will fall
+  */
+  private int lowestAvailableRow(int col) {
+    
+    return 0;
+  }
+  
+  /**
+  * 4. Determines if the player has a four-in-a-row in this row
+  * @param row - index of the row to check
+  * @param isRed - true if checking red player, false if checking yellow
+  * @return didWinRow - whether the player won in this row
+  */
+  private boolean winsThisRow(int row, boolean isRed) {
+    
+    return false;
+  }
+  
+  /**
+  * 5. Determines if the player has a four-in-a-row in this column
+  * @param col - index of the column to check
+  * @param isRed - true if checking red player, false if checking yellow
+  * @return didWinColumn - whether the player won in this column
+  */
+  private boolean winsThisColumn(int col, boolean isRed) {
+    
+    return false;
+  }
+  
+  /**
+  * 6. Determines if the player has a four-in-a-row in any diagonal line
+  * @param isRed - true if checking red player, false if checking yellow
+  * @return didWinWithDiagonal - whether the player won in a diagonal
+  */
+  private boolean hasDiagonalWin(boolean isRed) {
+    
+    return false;
+  }
+  
+  /**
+  * 7. Checks all rows, columns, and diagonals for a win
+  * @param isRed - true if checking red player, false if checking yellow
+  * @return didWin - whether the player won
+  */
+  private boolean didWin(boolean isRed) {
+    
+    return false; 
+  }
+  
+  /**
+  * 8. Calculates best move for the player based on the board
+  * @param isRed - true if checking red player, false if checking yellow
+  * @return col - index of the column picked
+  */
+  private int pickBestColumn(boolean isRed) {
+    isRed = false;
+    
+    return 0;
+  }
 }
