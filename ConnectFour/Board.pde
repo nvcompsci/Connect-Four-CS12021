@@ -26,8 +26,16 @@ public class Board {
     Chip move = new Chip(redTurn);
     int row = (int) map(mouseY, SCALE, boardHeight + SCALE, 0, spaces.length);
     int col = (int) map(mouseX, SCALE, boardWidth + SCALE, 0, spaces[0].length);
-    if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length)
-      spaces[row][col] = move;
+    if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length) {
+      if (isColumnAvailable(col)) {
+        row = lowestAvailableRow(col);
+        System.out.printf("\nColumn %d is available. Chip drops to row index %d.",col,row);
+        spaces[row][col] = move;
+      }
+      else {
+         System.out.printf("\nColumn %d is NOT available.",col);
+      }
+    }
   }
 
   private void drawEmptySpace(PVector pos) {
@@ -47,8 +55,12 @@ public class Board {
   * @return isAvailable - whether the column is available or not
   */
   private boolean isColumnAvailable(int col) {
-    
-    return false;
+    boolean isAvailable = false;
+    for (int i = 0; i < spaces.length; i++) {
+     if (spaces[i][col] == null)
+     isAvailable = true;
+    }
+    return isAvailable;
   }
   
   /**
@@ -56,7 +68,15 @@ public class Board {
   * @return col - index of the column picked
   */
   private int pickFirstAvailableColumn() {
-    
+      int col = 0;
+      for (int j = 0; j < spaces[0].length; j++) {
+        // if column is available 
+         if(isColumnAvailable(col)) { 
+           col = 0;
+  
+           //set col equal to that index 
+         }
+      }
     return 0;
   }
   
@@ -65,9 +85,9 @@ public class Board {
   * as the row with the highest index (lower on the page)
   * @param col - index of the column to check
   * @return row - index of the row where the chip will fall
-  */
+ **/
   private int lowestAvailableRow(int col) {
-    
+      
     return 0;
   }
   
