@@ -26,8 +26,16 @@ public class Board {
     Chip move = new Chip(redTurn);
     int row = (int) map(mouseY, SCALE, boardHeight + SCALE, 0, spaces.length);
     int col = (int) map(mouseX, SCALE, boardWidth + SCALE, 0, spaces[0].length);
-    if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length)
-      spaces[row][col] = move;
+    if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length) {
+      if (isColumnAvailable(col)) {
+        row = lowestAvailableRow(col);
+        System.out.printf("\nColumn %d is available. Chip drops to row index %d.",col,row);
+        spaces[row][col] = move;
+      }
+      else {
+         System.out.printf("\nColumn %d is NOT available.",col);
+      }
+    }
   }
 
   private void drawEmptySpace(PVector pos) {
