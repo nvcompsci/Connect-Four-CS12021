@@ -20,7 +20,9 @@ public class Board {
           spaces[i][j].draw(pos);
       }
     }
-    //System.out.println(winsThisRow( 4, spaces[4][0].isRed()));
+    for (int i = 0; i < spaces.length; i++) {
+  //  System.out.println(winsThisRow( 4, spaces[4][i].isRed()));
+  }
   }
 
   public void placeChip() {
@@ -95,7 +97,7 @@ public class Board {
    */
   private boolean winsThisRow(int row, boolean isRed) {
     boolean rowWin = false;
-    for(int i = 0; i < spaces.length-3; i++) {
+    for(int i = 0; i < spaces[0].length-3; i++) {
      if (spaces[row][i] != null && spaces[row][i].isRed()==spaces[row][i+1].isRed() && spaces[row][i].isRed()==spaces[row][i+2].isRed() && spaces[row][i].isRed()==spaces[row][i+3].isRed()) {
       rowWin = true; 
      }
@@ -111,7 +113,7 @@ public class Board {
    */
   private boolean winsThisColumn(int col, boolean isRed) {
     boolean colWin = false;
-    for (int i = 0; i < spaces[0].length-3; i++) {
+    for (int i = 0; i < spaces.length-3; i++) {
       if (spaces[i][col] != null && spaces[i][col].isRed()==spaces[i+1][col].isRed() && spaces[i][col].isRed()==spaces[i+2][col].isRed() && spaces[i][col].isRed()==spaces[i+3][col].isRed()) {
       colWin = true; 
      }
@@ -128,7 +130,16 @@ public class Board {
     boolean diagonalWin = false;
     for (int i = 0; i < spaces.length-3; i++) {
      for (int j = 0; j < spaces[0].length-3; j++) {
-       
+       if (spaces[i][j] != null && spaces[i][j].isRed()==spaces[i+1][j+1].isRed() && spaces[i][j].isRed()==spaces[i+2][j+2].isRed() && spaces[i][j].isRed() == spaces[i+3][j+3].isRed()) {
+        diagonalWin = true; 
+       }
+     }
+    }
+    for (int i = spaces.length -1; i > 2; i--) {
+     for (int j = 0; j<spaces[0].length-3; j++) {
+      if (spaces[i][j] !=null && spaces[i][j].isRed()==spaces[i-1][j+1].isRed() && spaces[i][j].isRed()==spaces[i-2][j+2].isRed() && spaces[i][j].isRed() == spaces[i-3][j+3].isRed()) {
+       diagonalWin=true; 
+      }
      }
     }
     return diagonalWin;
@@ -140,9 +151,14 @@ public class Board {
    * @return didWin - whether the player won
    */
   private boolean didWin(boolean isRed) {
-    boolean didWin = false;
-    
-    return didWin;
+    if (hasDiagonalWin(isRed)==true) return true;
+    for (int col = 0; col < spaces[0].length; col++){
+     if (winsThisColumn(col, isRed)==true) return true;
+    }
+    for (int row = 0; row < spaces.length; row++) {
+     if (winsThisRow(row, isRed)==true) return true; 
+    }
+    return false;
   }
 
   /**
