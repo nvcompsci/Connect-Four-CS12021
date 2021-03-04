@@ -57,7 +57,7 @@ public class Board {
   private boolean isColumnAvailable(int col) {
     boolean isAvailable = false;
     for (int i = 0; i < spaces.length; i++) {
-     if (spaces[i][col] == null)
+     if (spaces[i][col] == null) 
      isAvailable = true;
     }
     return isAvailable;
@@ -67,49 +67,54 @@ public class Board {
   * 2. Tries all columns, picks the first one (leftmost) available
   * @return col - index of the column picked
   */
-  private int pickFirstAvailableColumn() {
-      int col = 0;
-      for (int j = 0; j < spaces[0].length; j++) {
-        // if column is available 
-         if(isColumnAvailable(col)) { 
-           col = 0;
-  
-           //set col equal to that index 
-         }
-      }
-    return 0;
+ private int pickFirstAvailableColumn() {
+    int m = 7;
+    for (int i = 0; i < spaces[0].length; i++) {
+     if (isColumnAvailable(i) == true && i < m) {
+       m = i;
+     }
+    }
+    return m;
   }
-  
   /**
-  * 3. Determines row placement after chip falls, which is calculated
-  * as the row with the highest index (lower on the page)
-  * @param col - index of the column to check
-  * @return row - index of the row where the chip will fall
- **/
+   * 3. Determines row placement after chip falls, which is calculated
+   * as the row with the highest index (lower on the page)
+   * @param col - index of the column to check
+   * @return row - index of the row where the chip will fall
+   */
   private int lowestAvailableRow(int col) {
-      
+    if (isColumnAvailable(col)) {
+      for (int i = 5; i < spaces.length; i--) {
+        if (spaces[i][col] == null) return (i);
+        continue;
+      }
+    }
     return 0;
   }
   
-  /**
-  * 4. Determines if the player has a four-in-a-row in this row
-  * @param row - index of the row to check
-  * @param isRed - true if checking red player, false if checking yellow
-  * @return didWinRow - whether the player won in this row
-  */
+   /**
+   * 4. Determines if the player has a four-in-a-row in this row
+   * @param row - index of the row to check
+   * @param isRed - true if checking red player, false if checking yellow
+   * @return didWinRow - whether the player won in this row
+   */
   private boolean winsThisRow(int row, boolean isRed) {
-    
+    for (int i = 0; i < (spaces.length - 3); i++) {
+      if (spaces[row][i].isRed() == isRed) return true;
+    }
     return false;
   }
-  
+
   /**
-  * 5. Determines if the player has a four-in-a-row in this column
-  * @param col - index of the column to check
-  * @param isRed - true if checking red player, false if checking yellow
-  * @return didWinColumn - whether the player won in this column
-  */
+   * 5. Determines if the player has a four-in-a-row in this column
+   * @param col - index of the column to check
+   * @param isRed - true if checking red player, false if checking yellow
+   * @return didWinColumn - whether the player won in this column
+   */
   private boolean winsThisColumn(int col, boolean isRed) {
-    
+    for (int i = 0; i < (spaces[0].length - 3); i++) {
+      if (spaces[i][col].isRed() == isRed) return true;
+    }
     return false;
   }
   
