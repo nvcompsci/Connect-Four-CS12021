@@ -92,38 +92,30 @@ public class Board {
     return 0;
   }
   
-  /**
-  * 4. Determines if the player has a four-in-a-row in this row
-  * @param row - index of the row to check
-  * @param isRed - true if checking red player, false if checking yellow
-  * @return didWinRow - whether the player won in this row
-  */
+   /**
+   * 4. Determines if the player has a four-in-a-row in this row
+   * @param row - index of the row to check
+   * @param isRed - true if checking red player, false if checking yellow
+   * @return didWinRow - whether the player won in this row
+   */
   private boolean winsThisRow(int row, boolean isRed) {
-    boolean didWinRow = false;
-    for (int i = 0; i < spaces.length-3;i++) {
-     if (spaces[row][i] != null && spaces[row][i].isRed()==spaces[row][i+1].isRed() && spaces[row][i].isRed()==spaces[row][i+2].isRed() && spaces[row][i].isRed()==spaces[row][i+3].isRed()) { 
-       didWinRow = true;
+    for (int i = 0; i < (spaces.length - 3); i++) {
+      if (spaces[row][i].isRed() == isRed) return true;
     }
-    }
-    return didWinRow;
+    return false;
   }
-  
+
   /**
-  * 5. Determines if the player has a four-in-a-row in this column
-  * @param col - index of the column to check
-  * @param isRed - true if checking red player, false if checking yellow
-  * @return didWinColumn - whether the player won in this column
-  */
+   * 5. Determines if the player has a four-in-a-row in this column
+   * @param col - index of the column to check
+   * @param isRed - true if checking red player, false if checking yellow
+   * @return didWinColumn - whether the player won in this column
+   */
   private boolean winsThisColumn(int col, boolean isRed) {
-   boolean didWinColumn = false;
-   for ( int i = 0; i < spaces[0].length-3; i++) {
-      if (spaces[i][col] != null && spaces[i][col].isRed()==spaces[i+1][col].isRed() && spaces[i][col].isRed()==spaces[i+2][col].isRed() && spaces[i][col].isRed()==spaces[i+3][col].isRed()) { {
-       didWinColumn = true;
-      }
-     }
-     
-   }
-    return didWinColumn;
+    for (int i = 0; i < (spaces[0].length - 3); i++) {
+      if (spaces[i][col].isRed() == isRed) return true;
+    }
+    return false;
   }
   
   /**
