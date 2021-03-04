@@ -47,18 +47,15 @@ public class Board {
   * @return isAvailable - whether the column is available or not
   */
   private boolean isColumnAvailable(int col) {
-    boolean isColumnAvailable = true;
-    for (int i = 0; i < spaces.length; i++) {
-     
+    boolean isColumnAvailable = false;
+    for (int j = 0; j < spaces.length; j++) {
         
-        if (spaces[i][0] == null) {
+        if (spaces[j][col] == null) {
+          isColumnAvailable = true;
           //drawEmptySpace(pos);
         }
-        else {
-          return false;
-          //spaces[i][j].draw(pos);
+        
         }
-      }
     
     return isColumnAvailable;
   }
@@ -71,9 +68,9 @@ public class Board {
     int col = 0;
     for (int j = 0; j < spaces[0].length; j++) {
       //if column is available
-      if (true) {
+      if (isColumnAvailable(j) == true && j < col) {
         //set col equal to that index
-        
+        col += j;
       }
     }
     return col;
