@@ -24,11 +24,24 @@ public class Board {
   
   public void placeChip() {
     if  (isColumnAvailable(mouseX) == false) {
-    Chip move = new Chip(redTurn);
+    Chip move = new Chip(true);
+    //redTurn will rotate between red/yellow
     int row = (int) map(mouseY, SCALE, boardHeight + SCALE, 0, spaces.length);
     int col = (int) map(mouseX, SCALE, boardWidth + SCALE, 0, spaces[0].length);
     if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length)
-      spaces[lowestAvailableRow(mouseX)][col] = move;
+      spaces[lowestAvailableRow(col)][col] = move;
+      winsThisRow(lowestAvailableRow(col),true);
+      placeOpponentChip();
+    }
+  }
+  
+  public void placeOpponentChip() {
+    if  (isColumnAvailable(pickFirstAvailableColumn()) == false) {
+      Chip move = new Chip(false);
+      //int colEnemy = (int) map(pickFirstAvailableColumn(), SCALE, boardWidth + SCALE, 0, spaces[0].length);
+      //System.out.println(pickFirstAvailableColumn());
+      spaces[lowestAvailableRow(pickFirstAvailableColumn())][pickFirstAvailableColumn()] = move;
+      winsThisRow(lowestAvailableRow(pickFirstAvailableColumn()),false);
     }
   }
 
@@ -51,8 +64,14 @@ public class Board {
   private boolean isColumnAvailable(int col) {
     boolean answer = true;
     for (int i = 0; i<spaces.length; i++) {
+      if ((int) map(col, SCALE, boardWidth + SCALE, 0, spaces[0].length) > 0){
         if (spaces[i][(int) map(col, SCALE, boardWidth + SCALE, 0, spaces[0].length)] == null) {
           answer = false;
+        }
+      } else {
+        if (spaces[i][0] == null) {
+          answer = false;
+        }
       }
     }
     return answer;
@@ -63,9 +82,22 @@ public class Board {
   * @return col - index of the column picked
   */
   private int pickFirstAvailableColumn() {
+    //int[] availableColumns = {7,7,7,7,7,7,7};
+    int[] availableColumns = new int[7];
     int col = 0;
-    for (int j = 0; j < spaces[0].length; j++) {
-      
+    //for (int q = 0; q < spaces.length; q++){
+      for (int j = 0; j < spaces[0].length; j++) {
+        //System.out.println("false: "+j);
+        if (spaces[0][j] == null) {
+          //System.out.println("true: "+j);
+          availableColumns[j] = j;
+        //}
+      }
+    }
+      for (int i = 0; i<availableColumns.length; i++) {
+       if (availableColumns[i] > col) {
+        col = availableColumns[i]; 
+       }
     }
     return col;
   }
@@ -80,7 +112,7 @@ public class Board {
     int[] availableRows = new int[6];
     int finalAnswer = 0;
     for (int i = 0; i<spaces.length; i++) {
-        if (spaces[i][(int) map(col, SCALE, boardWidth + SCALE, 0, spaces[0].length)] == null) {
+        if (spaces[i][col] == null) {
           availableRows[i] = i;
        }
        for (int p = 0; p<availableRows.length; p++) {
@@ -99,8 +131,30 @@ public class Board {
   * @return didWinRow - whether the player won in this row
   */
   private boolean winsThisRow(int row, boolean isRed) {
-    
-    return false;
+    boolean[] availableRowWins = new boolean[7];
+    int currentStreak = 0;
+    boolean result = false;
+    for (int i = 0; i<spaces[0].length; i++) {
+       if (spaces[row][i] == null) {
+         availableRowWins[i] = false;
+    } else if (spaces[row][i].isRed() == isRed) {
+        availableRowWins[i] = true;
+        System.out.println(currentStreak);
+    }
+    }
+    for (int q = 0; q<availableRowWins.length; q++) {
+      //System.out.println(currentStreak);
+      if (availableRowWins[q] == true) {
+         currentStreak = currentStreak + 1;
+         if (currentStreak >= 4) {
+            result = true;
+        }
+      } else {
+        currentStreak = 0;
+      }
+    }
+    System.out.println(result);
+    return result;
   }
   
   /**
