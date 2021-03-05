@@ -30,19 +30,18 @@ public class Board {
     int col = (int) map(mouseX, SCALE, boardWidth + SCALE, 0, spaces[0].length);
     if (row >= 0 && row < spaces.length && col >=0 && col < spaces[0].length)
       spaces[lowestAvailableRow(col)][col] = move;
-      winsThisRow(lowestAvailableRow(col),true);
+      System.out.println(didWin(true));
       placeOpponentChip();
     }
   }
   
   public void placeOpponentChip() {
-    if  (isColumnAvailable(pickFirstAvailableColumn()) == false) {
+    //if  (isColumnAvailable(pickFirstAvailableColumn()) == false) {
       Chip move = new Chip(false);
       //int colEnemy = (int) map(pickFirstAvailableColumn(), SCALE, boardWidth + SCALE, 0, spaces[0].length);
-      //System.out.println(pickFirstAvailableColumn());
       spaces[lowestAvailableRow(pickFirstAvailableColumn())][pickFirstAvailableColumn()] = move;
-      winsThisRow(lowestAvailableRow(pickFirstAvailableColumn()),false);
-    }
+      System.out.println(didWin(false));
+    //}
   }
 
   private void drawEmptySpace(PVector pos) {
@@ -82,9 +81,9 @@ public class Board {
   * @return col - index of the column picked
   */
   private int pickFirstAvailableColumn() {
-    //int[] availableColumns = {7,7,7,7,7,7,7};
-    int[] availableColumns = new int[7];
-    int col = 0;
+    int[] availableColumns = {6,6,6,6,6,6,6};
+    //int[] availableColumns = new int[7];
+    int col = 6;
     //for (int q = 0; q < spaces.length; q++){
       for (int j = 0; j < spaces[0].length; j++) {
         //System.out.println("false: "+j);
@@ -95,7 +94,7 @@ public class Board {
       }
     }
       for (int i = 0; i<availableColumns.length; i++) {
-       if (availableColumns[i] > col) {
+       if (availableColumns[i] < col) {
         col = availableColumns[i]; 
        }
     }
@@ -135,11 +134,11 @@ public class Board {
     int currentStreak = 0;
     boolean result = false;
     for (int i = 0; i<spaces[0].length; i++) {
-       if (spaces[row][i] == null) {
+      if (spaces[row][i] == null) {
          availableRowWins[i] = false;
-    } else if (spaces[row][i].isRed() == isRed) {
+    } else if (spaces[row][i].isRed() == isRed){
         availableRowWins[i] = true;
-        System.out.println(currentStreak);
+        //System.out.println(currentStreak);
     }
     }
     for (int q = 0; q<availableRowWins.length; q++) {
@@ -153,7 +152,8 @@ public class Board {
         currentStreak = 0;
       }
     }
-    System.out.println(result);
+    //System.out.println(currentStreak+" "+isRed);
+    //System.out.println(result);
     return result;
   }
   
@@ -164,8 +164,31 @@ public class Board {
   * @return didWinColumn - whether the player won in this column
   */
   private boolean winsThisColumn(int col, boolean isRed) {
-    
-    return false;
+    boolean[] availableColumnWins = new boolean[7];
+    int currentStreak = 0;
+    boolean result = false;
+    for (int i = 0; i<spaces.length; i++) {
+      if (spaces[i][col] == null) {
+         availableColumnWins[i] = false;
+    } else if (spaces[i][col].isRed() == isRed){
+        availableColumnWins[i] = true;
+        //System.out.println(currentStreak);
+    }
+    }
+    for (int q = 0; q<availableColumnWins.length; q++) {
+      //System.out.println(currentStreak);
+      if (availableColumnWins[q] == true) {
+         currentStreak = currentStreak + 1;
+         if (currentStreak >= 4) {
+            result = true;
+        }
+      } else {
+        currentStreak = 0;
+      }
+    }
+    //System.out.println(currentStreak+" "+isRed);
+    //System.out.println(result);
+    return result;
   }
   
   /**
@@ -174,8 +197,37 @@ public class Board {
   * @return didWinWithDiagonal - whether the player won in a diagonal
   */
   private boolean hasDiagonalWin(boolean isRed) {
-    
-    return false;
+    boolean wins1 = false;
+    boolean wins2 = false;
+    boolean wins = false;
+    for (int i = 0; i<spaces.length; i++) {
+     for (int q = 0; q<spaces[0].length; q++) {
+       if (i - 3 <= spaces.length && q - 3 <= spaces[0].length && (i + 3 >= spaces.length && q + 3 >= spaces[0].length)) {
+         if (spaces[i][q] == null || spaces[i-1][q-1] == null || spaces[i-2][q-2] == null || spaces[i-3][q-3] == null) {
+           wins1 = false;
+         } else if (spaces[i][q].isRed() == isRed && spaces[i-1][q-1].isRed() == isRed && spaces[i-2][q-2].isRed() == isRed && spaces[i-3][q-3].isRed() == isRed) {
+          wins1 = true;
+        }
+       }
+     }
+    }
+   for (int g = 0; g<spaces.length; g++) {
+     for (int y = 0; y<spaces[0].length; y++) {
+       if (g + 3 <= spaces.length && y - 3 <= spaces[0].length & (g + 3 >= spaces.length && y - 3 >= spaces[0].length)) {
+        if (spaces[g][y] == null || spaces[g+1][y-1] == null || spaces[g+2][y-2] == null || spaces[g+3][y-3] == null) {
+          wins2 = false;
+        } else if (spaces[g][y].isRed() == isRed && spaces[g+1][y-1].isRed() == isRed && spaces[g+2][y-2].isRed() == isRed && spaces[g+3][y-3].isRed() == isRed) {
+          wins2 = true;
+        }                                                                                                                            
+       }
+     }
+   }
+   if (wins1 == true || wins2 == true) {
+    wins = true; 
+   } else {
+    wins = false; 
+   }
+    return wins;
   }
   
   /**
@@ -184,8 +236,21 @@ public class Board {
   * @return didWin - whether the player won
   */
   private boolean didWin(boolean isRed) {
-    
-    return false; 
+    boolean wins = false;
+    for (int q = 0; q<spaces.length; q++) {
+      if (winsThisRow(q,isRed) == true) {
+        wins = true;
+      }
+    }
+    for (int i = 0; i<spaces[0].length; i++) {
+      if (winsThisColumn(i,isRed) == true) {
+       wins = true; 
+      }
+    }
+    if (hasDiagonalWin(isRed) == true) {
+     wins = true; 
+    }
+    return wins; 
   }
   
   /**
