@@ -1,4 +1,4 @@
-public class Board {
+ public class Board {
   Chip[][] spaces = new Chip[6][7];
   private int boardWidth, boardHeight;
   
@@ -47,8 +47,17 @@ public class Board {
   * @return isAvailable - whether the column is available or not
   */
   private boolean isColumnAvailable(int col) {
+    boolean isAvailable = true;
     
-    return false;
+    for(int i = 0; i < spaces.length; i++){
+      
+      if (spaces[i][col] == null) {
+      return true;
+    }
+    else {
+    if(spaces[i][col]== null);}
+    }
+    return true;
   }
   
   /**
@@ -56,9 +65,15 @@ public class Board {
   * @return col - index of the column picked
   */
   private int pickFirstAvailableColumn() {
-    
-    return 0;
+    int col = 0;
+    for (int i = 0; i < spaces[0].length; i++) {
+      if(isColumnAvailable(i)) {
+        col++;
+      }
+    }
+    return col;
   }
+
   
   /**
   * 3. Determines row placement after chip falls, which is calculated
@@ -67,8 +82,11 @@ public class Board {
   * @return row - index of the row where the chip will fall
   */
   private int lowestAvailableRow(int col) {
-    
-    return 0;
+    int lowest = 6;
+    for (int i = 0; i < spaces[0].length; ){
+    if(isColumnAvailable(i)== true){
+    lowest = 1;}}
+    return 1;
   }
   
   /**
