@@ -197,7 +197,7 @@ public class Board {
     }
     return false;
   }
-  
+
 
   /**
    * 7. Checks all rows, columns, and diagonals for a win
@@ -206,10 +206,10 @@ public class Board {
    */
   private boolean didWin(boolean isRed) {
          for (int i = 0; i < spaces.length; i++) {
-          if (winsThisRow(i, isRed) return true;
+          if (winsThisRow(i, isRed)) return true;
          }
          for (int i = 0; i < spaces[i].length; i++) {
-          if (winsThisColumn(i, isRed) return true; 
+          if (winsThisColumn(i, isRed)) return true; 
          }
          if (hasDiagonalWin(isRed)) return true;
     return false;
