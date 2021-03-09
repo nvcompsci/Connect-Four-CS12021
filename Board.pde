@@ -36,6 +36,15 @@ public class Board {
          System.out.printf("\nColumn %d is NOT available.",col);
       }
     }
+    if (didWin(true)) {
+      System.out.print("YAY YOU WIN");
+    }
+    else {
+      System.out.print("TRY AGAIN LOL");
+    }
+    if (!didWin(true) && didWin(false)) {
+      System.out.print("YOO YOU WIN");
+    }
   }
 
   private void drawEmptySpace(PVector pos) {
@@ -101,9 +110,14 @@ public class Board {
   */
   private boolean winsThisRow(int row, boolean isRed) {
     boolean didWinRow = false;
-    for (int i = 0; i < spaces[0].length - 3; i++) {
+    for (int i = 0; i < spaces.length - 4; i++) {
+      if (spaces[row][i] == null) continue;
+      if (spaces[row][i+1] == null) continue;
+      if (spaces[row][i+2] == null) continue;
+      if (spaces[row][i+3] == null) continue;
       if (spaces[row][i].isRed() && spaces[row][i+1].isRed() && spaces[row][i+2].isRed() && spaces[row][i+3].isRed()) {
         didWinRow = true;
+        break;
       }
       else if (!spaces[row][i].isRed() && !spaces[row][i+1].isRed() && !spaces[row][i+2].isRed() && !spaces[row][i+3].isRed()) {
         didWinRow = true;
@@ -120,9 +134,14 @@ public class Board {
   */
   private boolean winsThisColumn(int col, boolean isRed) {
     boolean didWinColumn = false;
-    for (int i = 0; i < spaces.length - 3; i++) {
+    for (int i = 0; i < spaces[0].length - 4; i++) {
+      if (spaces[i][col] == null) continue;
+      if (spaces[i+1][col] == null) continue;
+      if (spaces[i+2][col] == null) continue;
+      if (spaces[i+3][col] == null) continue;
       if (spaces[i][col].isRed() && spaces[i+1][col].isRed() && spaces[i+2][col].isRed() && spaces[i+3][col].isRed()) {
         didWinColumn = true;
+        break;
       }
       else if (!spaces[i][col].isRed() && !spaces[i+1][col].isRed() && !spaces[i+2][col].isRed() && !spaces[i+3][col].isRed()) {
         didWinColumn = true;
@@ -137,8 +156,38 @@ public class Board {
   * @return didWinWithDiagonal - whether the player won in a diagonal
   */
   private boolean hasDiagonalWin(boolean isRed) {
-    
-    return false;
+    boolean didWinDiagonal = false;
+    for (int i = 0; i < spaces.length - 4; i++) {
+      for (int j = 0; j < spaces[0].length - 4; j++) {
+        if (spaces[i][j] == null) continue;
+        if (spaces[i+1][j+1] == null) continue;
+        if (spaces[i+2][j+2] == null) continue;
+        if (spaces[i+3][j+3] == null) continue;
+        if (spaces[i][j].isRed() && spaces[i+1][j+1].isRed() && spaces[i+2][j+2].isRed() && spaces[i+3][j+3].isRed()) {
+          didWinDiagonal = true;
+          break;
+        }
+        else if (!spaces[i][j].isRed() && !spaces[i+1][j+1].isRed() && !spaces[i+2][j+2].isRed() && !spaces[i+3][j+3].isRed()) {
+          didWinDiagonal = true;
+        }
+      }
+    }
+    for (int i = spaces.length-1; i > 2; i--) {
+      for (int j = spaces[0].length-1; j > 2; j--) {
+        if (spaces[i-3][j] == null) continue;
+        if (spaces[i-2][j-1] == null) continue;
+        if (spaces[i-1][j-2] == null) continue;
+        if (spaces[i][j-3] == null) continue;
+        if (spaces[i-3][j].isRed() && spaces[i-2][j-1].isRed() && spaces[i-1][j-2].isRed() && spaces[i][j-3].isRed()) {
+          didWinDiagonal = true;
+          break;
+        }
+        else if (!spaces[i-3][j].isRed() && !spaces[i-2][j-1].isRed() && !spaces[i-1][j-2].isRed() && !spaces[i][j-3].isRed()) {
+          didWinDiagonal = true;
+        }
+      }
+    }
+    return didWinDiagonal;
   }
   
   /**
@@ -147,8 +196,23 @@ public class Board {
   * @return didWin - whether the player won
   */
   private boolean didWin(boolean isRed) {
-    
-    return false; 
+    boolean didWin = false;
+    for (int i = 0; i < spaces.length; i++) {
+      if (winsThisRow(i, isRed)) {
+        didWin = true;
+        break;
+      }
+    }
+    for (int i = 0; i < spaces[0].length; i++) {
+      if (winsThisColumn(i, isRed)) {
+        didWin = true;
+        break;
+      }
+    }
+    if (hasDiagonalWin(isRed)) {
+      didWin = true;
+    }
+    return didWin; 
   }
   
   /**
